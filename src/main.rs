@@ -3,10 +3,8 @@ use reqwest::Error;
 use serde_json;
 use Justice::CheckInResponse;
 use std::time::SystemTime;
-use Justice::actions::ResponseActionType;
 use Justice::actions::c2_actions;
 use Justice::PostRequest;
-use Justice::actions::RequestActionType;
 use std::process::Command;
 
 const C2URL: &str = "http://localhost:8000";
